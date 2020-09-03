@@ -1,14 +1,9 @@
-i.icon {
-  font-size: 1.5rem ;  
-}
-
-img {
-  height: auto;
-  width: 100%;
+i.code {
+  font-size: 2rem ;  
 }
 
 .body-container {
-  padding: 60px 20px;
+  padding: 80px 20px;
   width: 80%;
   margin: auto;
   

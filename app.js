@@ -3,11 +3,15 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const methodOverride = require("method-override");
 
 // APP CONFIG
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.use(express.static('public')); // We can access stylesheets, images, etc. now via public folder.
+mongoose.set('useFindAndModify', false); // needed to fix this error message: DeprecationWarning: Mongoose: `findOneAndUpdate()` and `findOneAndDelete()` without the `useFindAndModify` option set to false are deprecated.
+
 
 
 
@@ -43,6 +47,70 @@ app.get("/blogs", (req, res) => {
       console.log(err);
     } else {
       res.render("index", { blogs: blogs });
+    }
+  });
+});
+
+// CREATE ROUTE
+app.get("/blogs/new", (req, res) => {
+  res.render("new");
+})
+
+// POSTS ROUTE
+app.post("/blogs", (req, res) => {
+  Blog.create(req.body.blog, (err, newBlog) => {
+    if (err) {
+      res.redirect("new");
+    } else {
+      res.redirect("/blogs");
+    }
+  });
+});
+
+// SHOW ROUTE
+app.get("/blogs/:id", (req, res) => {
+  Blog.findById(req.params.id, (err, foundBlog) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("show", { blog: foundBlog });
+    }
+  });
+});
+
+// EDIT ROUTE
+app.get("/blogs/:id/edit", (req, res) => {
+  Blog.findById(req.params.id, (err, foundBlog) => {
+    if (err) {
+      res.redirect("/blogs");
+    } else {
+      res.render("edit", { blog: foundBlog });
+    }
+  });
+});
+
+// UPDATE ROUTE
+// Must use and install Method-Override or put request will act like a get request and just create a duplicate post. See edit.ejs page.
+app.put("/blogs/:id", (req, res) => {
+  // .findByIdAndUpdate params = (id, newData, callback)
+  Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) => {
+    if (err) {
+      console.log(err);
+      res.redirect("/blogs");
+    } else {
+      // redirect to show page
+      res.redirect("/blogs/" + req.params.id);
+    }
+  });
+});
+
+// DESTROY ROUTE
+app.delete("/blogs/:id", (req, res) => {
+  Blog.findByIdAndRemove(req.params.id, (err) => {
+    if (err) {
+      res.redirect("/blogs");
+    } else {
+      res.redirect("/blogs");
     }
   });
 });
