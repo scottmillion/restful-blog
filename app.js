@@ -55,7 +55,7 @@ app.get("/blogs", (req, res) => {
   });
 });
 
-// CREATE ROUTE
+// NEW ROUTE
 app.get("/blogs/new", (req, res) => {
   res.render("new");
 })
