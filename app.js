@@ -60,7 +60,7 @@ app.get("/blogs/new", (req, res) => {
   res.render("new");
 })
 
-// POSTS ROUTE
+// CREATE ROUTE
 app.post("/blogs", (req, res) => {
   // sanitize is used when we allow html instead of just text in our input. It removes things like <script>
 
