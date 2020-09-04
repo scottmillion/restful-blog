@@ -7,15 +7,16 @@
   <form class="ui form" action="/blogs" method="POST">
     <div class="field">
       <label>Title</label>
-      <input type="text" name="blog[title]" placeholder="title">
+      <!-- NOTE! blog[title] is to be used only with body-parser. We use blog[title], blog[image] and blog[body] because this creates a 'blog' object with title, image, and body key value pairs that can be accessed via req.body.blog in app.js -->
+      <input type="text" name="blog[title]" placeholder="title" required>
     </div>
     <div class="field">
       <label>Image</label>
-      <input type="text" name="blog[image]" placeholder="image">
+      <input type="text" name="blog[image]" placeholder="image" required>
     </div>
     <div class="field">
       <label>Body</label>
-      <textarea name="blog[body]" placeholder="blog post goes here"></textarea>
+      <textarea name="blog[body]" placeholder="blog post goes here" required></textarea>
     </div>
     <input class="ui violet big basic button" type="submit">
   </form>
